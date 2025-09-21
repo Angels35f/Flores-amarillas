@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* Asegura que el body y html ocupen toda la pantalla y no tengan scroll horizontal */
+html, body, #root {
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Opcional: mejora el suavizado de fuentes */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f9fafb; /* color claro por defecto, puedes quitarlo si usas imagen */
+  display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+}
