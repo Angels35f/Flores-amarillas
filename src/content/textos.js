@@ -75,7 +75,7 @@ loto: {
     ]
   },
   girasol: {
-    titulo: "Flor Romántica",
+    titulo: "Flor Sentimental",
     cuerpo: `Como ya es costumbre, al final de esta carta revelaré mi "plan malévolo", porque para este punto ya es casi seguro que no podré escuchar tu reacción en vivo. Probablemente estés leyendo esto sola (o no, quién sabe). En cualquier caso, espero que hayas disfrutado la experiencia. Intenté crear cuatro flores amarillas que, aunque me costaron un poquito, creo que salieron relativamente bien (en mi humilde opinión). Claramente, lo más importante para mí es que te haya gustado y, si de alguna forma todo esto te ha encantado (o si te he encantado yo más), entonces ya cumplí mi misión.
 
 Ahora estamos dentro del bonito girasol. Para mí, esta es una de las flores que mejor representa el amor, y es que toda esta última carta dependerá de responder a lo que mencionaste que sentías por mí en tu carta. También está de fondo la dulce Candy, la verdad me gustaría tener una rosa con tu nombre, pero ya veremos eso en el futuro.

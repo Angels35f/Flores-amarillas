@@ -63,7 +63,7 @@ function Home({
       className="min-h-screen w-full bg-cover bg-center bg-fixed relative overflow-hidden"
       style={{ backgroundImage: `url(${fondo})` }}
     >
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20"> {/* Movido el input arriba para consistencia */}
+      <div className="palabra"> {/* Movido el input arriba para consistencia */}
         <input
           type="text"
           placeholder="Escribe la palabra..."
@@ -80,7 +80,6 @@ function Home({
         height="100%"
         style={{ zIndex: 1 }}
       >
-        {/* 3. La ruta ahora es dinámica */}
         <path
           d={pathData}
           stroke="#000000"
@@ -91,7 +90,6 @@ function Home({
         />
       </svg>
       
-      {/* 4. Las flores ahora usan referencias y clases responsivas */}
       <div ref={margaritaRef} className="absolute top-[75%] left-[15%] md:top-[60%] md:left-[10%] z-10">
         <Margarita
           isOpen={isOpenMargarita}

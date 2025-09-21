@@ -3,7 +3,8 @@ import { textosCartas } from '../content/textos.js';
 import girasolFondo from '../assets/girasol.png'; 
 import papel4 from '../assets/papel4.png';       
 import BotonVolver from '../components/BotonVolver';
-import BotonVisibilidad from '../components/BotonVisibilidad'; 
+import BotonVisibilidad from '../components/BotonVisibilidad';
+import '../styles/boton.css'
 
 
 const GirasolPage = () => {
@@ -35,7 +36,7 @@ const GirasolPage = () => {
         }}
       >
         <div className="max-w-lg w-full">
-          <h1 className="text-4xl md:text-5xl font-bold text-black mb-6 text-center">
+          <h1 className="titulo">
             {textosCartas.girasol.titulo}
           </h1>
 

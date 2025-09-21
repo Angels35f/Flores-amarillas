@@ -36,7 +36,7 @@ const MargaritaPage = () => {
         }}
       >
         <div className="max-w-lg"> 
-          <h1 className="text-4xl md:text-2xl font-bold text-black mb-6 text-center">
+          <h1 className="titulo">
             {textosCartas.margarita.titulo}
           </h1>
           <p className="text-base md:text-lg text-black leading-relaxed whitespace-pre-wrap text-justify">

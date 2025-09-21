@@ -39,7 +39,7 @@ const LotoPage = () => {
         }}
       >
         <div className="max-w-lg w-full">
-          <h1 className="text-4xl md:text-5xl font-bold text-black mb-6 text-center">
+          <h1 className="titulo">
             {textosCartas.loto.titulo}
           </h1>
           

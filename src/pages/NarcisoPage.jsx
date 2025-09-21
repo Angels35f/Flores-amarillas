@@ -34,7 +34,7 @@ const NarcisoPage = () => {
         }}
       >
         <div className="max-w-lg"> 
-          <h1 className="text-4xl md:text-2xl font-bold text-black mb-6 text-center">
+          <h1 className="titulo">
             {textosCartas.narciso.titulo}
           </h1>
           
