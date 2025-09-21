@@ -114,7 +114,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Flores-amarillas/">
       <Routes>
         <Route
           path="/"
