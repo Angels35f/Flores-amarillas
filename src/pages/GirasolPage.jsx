@@ -19,13 +19,12 @@ const GirasolPage = () => {
         isVisible={isContentVisible} 
         toggleVisibility={() => setIsContentVisible(!isContentVisible)} 
       />
-      {/* Contenedor del papel */}
       <div
         className={`relative rounded-xl p-6 sm:p-10 max-w-3xl w-full max-h-[95vh] overflow-y-auto flex flex-col items-center
                    transition-all duration-500 ease-in-out ${ 
                    isContentVisible 
                      ? 'opacity-100 scale-100' 
-                     : 'opacity-0 scale-95 pointer-events-none' // Clases para ocultar
+                     : 'opacity-0 scale-95 pointer-events-none' 
                    }`}
         style={{
           backgroundImage: `url(${papel4})`,
@@ -44,7 +43,6 @@ const GirasolPage = () => {
             {textosCartas.girasol.cuerpo}
           </p>
 
-          {/* 3. Renderizado de la Posdata con el enlace */}
           <p className="text-base md:text-lg text-black leading-relaxed whitespace-pre-wrap text-justify mt-6 italic">
             {textosCartas.girasol.posdata1_parte1}
             <a

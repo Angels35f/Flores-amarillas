@@ -6,7 +6,6 @@ import BotonVolver from '../components/BotonVolver';
 import BotonVisibilidad from '../components/BotonVisibilidad.jsx';
 
 const MargaritaPage = () => {
-  // 1. Añadimos el estado para controlar la visibilidad
   const [isContentVisible, setIsContentVisible] = useState(true);
 
   return (
@@ -16,13 +15,11 @@ const MargaritaPage = () => {
     >
       <BotonVolver />
       
-      {/* 2. Añadimos el botón de visibilidad */}
       <BotonVisibilidad 
         isVisible={isContentVisible} 
         toggleVisibility={() => setIsContentVisible(!isContentVisible)} 
       />
       
-      {/* 3. Este es el div que tiene la imagen del papel y las clases dinámicas */}
       <div
         className={`relative rounded-xl p-6 sm:p-10 max-w-3xl w-full max-h-[95vh] overflow-y-auto flex flex-col items-center
                    transition-all duration-500 ease-in-out ${

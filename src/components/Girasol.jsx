@@ -1,8 +1,6 @@
 import React from 'react';
 
-// --- Componente del Pétalo ---
 const Petal = ({ rotation, isOpen, scale = 1, color = "#FFEB3B", stroke = "#d3c331ff", pathOverride, translateOverride }) => {
-  // Path para pétalo exterior e interior
   const closedPetalPath = `
     M 0 0 
     C 15 -20, 15 -40, 0 -45 
@@ -15,7 +13,6 @@ const Petal = ({ rotation, isOpen, scale = 1, color = "#FFEB3B", stroke = "#d3c3
     C -25 -60, -25 -20, 0 0 
     Z
   `;
-  // Path para pétalo interior (más corto)
   const closedInnerPetalPath = `
     M 0 0 
     C 8 -10, 8 -25, 0 -35 
@@ -59,12 +56,10 @@ const Petal = ({ rotation, isOpen, scale = 1, color = "#FFEB3B", stroke = "#d3c3
 };
 
 
-// --- Componente Principal del Girasol ---
 const Girasol = ({ isOpen, onClick }) => {
   const numPetals = 13;
   const numInnerPetals = 10;
-  const openTwist = 60; // grados extra de giro al abrirse
-
+  const openTwist = 60; 
   return (
     <svg
       width="150"
@@ -81,7 +76,6 @@ const Girasol = ({ isOpen, onClick }) => {
         </filter>
       </defs>
 
-      {/* Tallo y Hojas */}
       <g
         style={{
           opacity: isOpen ? 0 : 1,
@@ -89,7 +83,6 @@ const Girasol = ({ isOpen, onClick }) => {
           transition: 'opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1)',
         }}
       >
-        {/* Tallo */}
         <path
           d="M 0 40 Q 15 80 0 120"
           fill="none"
@@ -97,7 +90,6 @@ const Girasol = ({ isOpen, onClick }) => {
           strokeWidth="8"
           strokeLinecap="round"
         />
-        {/* Hoja izquierda (más arriba y pegada al tallo, rotada un poco) */}
         <path
           d="M 3 75 Q -32 60 -17 40 Q 0 55 3 75"
           fill="#7BC67E"
@@ -105,7 +97,6 @@ const Girasol = ({ isOpen, onClick }) => {
           strokeWidth="2"
           transform="rotate(-18 -7 70)"
         />
-        {/* Hoja derecha (más abajo y separada, rotada un poco) */}
         <path
           d="M 13 95 Q 37 100 30 120 Q 0 115 13 95"
           fill="#7BC67E"
@@ -115,9 +106,7 @@ const Girasol = ({ isOpen, onClick }) => {
         />
       </g>
 
-      {/* Flor */}
       <g filter="url(#shadow)">
-        {/* Capa exterior de pétalos */}
         {Array.from({ length: numPetals }).map((_, i) => (
           <Petal
             key={`outer-${i}`}
@@ -127,7 +116,6 @@ const Girasol = ({ isOpen, onClick }) => {
             stroke="#d3c331ff"
           />
         ))}
-        {/* Capa interior de pétalos */}
         {Array.from({ length: numInnerPetals }).map((_, i) => (
           <Petal
             key={`inner-${i}`}
@@ -150,12 +138,9 @@ const Girasol = ({ isOpen, onClick }) => {
             translateOverride={isOpen ? 18 : 7}
           />
         ))}
-        {/* Centro */}
         <g>
-          {/* Textura del centro (semillas en espiral) */}
           {Array.from({ length: 100 }).map((_, i) => {
-            // Espiral de Fermat para simular semillas
-            const angle = i * 137.5 * (Math.PI / 180); // ángulo áureo
+            const angle = i * 137.5 * (Math.PI / 180); 
             const radius = isOpen ? 2 + (i * 0.25) : 2 + (i * 0.13);
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;

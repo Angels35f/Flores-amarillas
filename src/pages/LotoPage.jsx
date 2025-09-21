@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import { textosCartas } from '../content/textos.js';
 import lotus from '../assets/lotus.png';
-import papel3 from '../assets/papel3.png'; // Corregido el nombre del papel si era necesario
+import papel3 from '../assets/papel3.png'; 
 import BotonVolver from '../components/BotonVolver';
 import Tooltip from '../components/Tooltip';
 import BotonVisibilidad from '../components/BotonVisibilidad';
 
-const LotoPage = () => { // <-- CAMBIO 1: Se añade { y return
+const LotoPage = () => { 
   
-  // CAMBIO 2: Se añade el estado para controlar la visibilidad
+
   const [isContentVisible, setIsContentVisible] = useState(true);
 
   return (
@@ -31,7 +31,7 @@ const LotoPage = () => { // <-- CAMBIO 1: Se añade { y return
                      : 'opacity-0 scale-95 pointer-events-none'
                    }`}
         style={{
-          backgroundImage: `url(${papel3})`, // Corregido a papel3 para que coincida con la importación
+          backgroundImage: `url(${papel3})`, 
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -44,7 +44,6 @@ const LotoPage = () => { // <-- CAMBIO 1: Se añade { y return
           </h1>
           
           {textosCartas.loto.parrafos.map((parrafo, pIndex) => (
-            // Es mejor usar <p> para párrafos por semántica y estilos por defecto
             <p key={pIndex} className="text-base md:text-lg text-black leading-relaxed whitespace-pre-wrap text-justify mb-4">
               {parrafo.map((item, iIndex) => {
                 if (typeof item === 'string') {

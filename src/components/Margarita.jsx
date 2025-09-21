@@ -1,8 +1,6 @@
 import React from 'react';
 
 const Petal = ({ rotation, isOpen, scale = 1, color = "#FFF59D", stroke = "#FBC02D", pathOverride }) => {
-  // Pétalo cerrado: pequeño y cerca del centro
-  // Pétalo abierto: más grande y más alejado
   const closedPetalPath = `
     M 0 0
     C 6 -10, 6 -30, 0 -40
@@ -41,14 +39,11 @@ const Petal = ({ rotation, isOpen, scale = 1, color = "#FFF59D", stroke = "#FBC0
 };
 
 const Margarita = ({ isOpen, onClick, onCenterClick }) => {
-  // Capa exterior: pétalos largos
   const outerPetals = 14;
-  const openTwist = 50; // grados extra de giro al abrirse
+  const openTwist = 50; 
 
-  // Capa interior: pétalos más cortos y claros
   const innerPetals = 10;
 
-  // Puedes ajustar el path para la capa interior si quieres que sea más corto
   const closedInnerPetalPath = `
     M 0 0
     C 4 -7, 13 -18, 0 -44
@@ -77,7 +72,6 @@ const Margarita = ({ isOpen, onClick, onCenterClick }) => {
           <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.2" />
         </filter>
       </defs>
-      {/* Tallo */}
       {!isOpen && (
         <path
           d="M 0 30 C -15 70 15 80 0 100"
@@ -88,7 +82,6 @@ const Margarita = ({ isOpen, onClick, onCenterClick }) => {
         />
       )}
       <g filter="url(#shadow-margarita)">
-        {/* Capa exterior */}
         {Array.from({ length: outerPetals }).map((_, i) => (
           <Petal
             key={`outer-${i}`}
@@ -98,7 +91,6 @@ const Margarita = ({ isOpen, onClick, onCenterClick }) => {
             stroke="#FBC02D"
           />
         ))}
-        {/* Capa interior */}
         {Array.from({ length: innerPetals }).map((_, i) => (
           <Petal
             key={`inner-${i}`}
@@ -110,7 +102,6 @@ const Margarita = ({ isOpen, onClick, onCenterClick }) => {
             pathOverride={isOpen ? openInnerPetalPath : closedInnerPetalPath}
           />
         ))}
-        {/* Centro */}
         <circle
           cx="0"
           cy="0"

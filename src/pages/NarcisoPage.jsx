@@ -18,13 +18,12 @@ const NarcisoPage = () => {
         isVisible={isContentVisible} 
         toggleVisibility={() => setIsContentVisible(!isContentVisible)} 
       />
-      {/* Contenedor del papel */}
       <div
          className={`relative rounded-xl p-6 sm:p-10 max-w-3xl w-full max-h-[95vh] overflow-y-auto flex flex-col items-center
-                   transition-all duration-500 ease-in-out ${ // Clases para la animación
+                   transition-all duration-500 ease-in-out ${ 
                    isContentVisible 
                      ? 'opacity-100 scale-100' 
-                     : 'opacity-0 scale-95 pointer-events-none' // Clases para ocultar
+                     : 'opacity-0 scale-95 pointer-events-none' 
                    }`}
         style={{
           backgroundImage: `url(${papel2})`,
@@ -39,12 +38,9 @@ const NarcisoPage = () => {
             {textosCartas.narciso.titulo}
           </h1>
           
-          {/* ---- AQUÍ ESTÁ EL CAMBIO PRINCIPAL ---- */}
           <p className="text-base md:text-lg text-black leading-relaxed whitespace-pre-wrap text-justify">
-            {/* Se muestra la primera parte del texto */}
             {textosCartas.narciso.cuerpo1}
 
-            {/* La palabra del medio se convierte en un enlace */}
             <a 
               href={urlCancion} 
               target="_blank" 
@@ -54,7 +50,6 @@ const NarcisoPage = () => {
               {textosCartas.narciso.palabraLink}
             </a>
             
-            {/* Se muestra la segunda parte del texto */}
             {textosCartas.narciso.cuerpo2}
           </p>
         </div>

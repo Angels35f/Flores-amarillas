@@ -1,10 +1,7 @@
 import React from 'react';
 
-// --- Componente Principal del Narciso ---
 const Narciso = ({ isOpen, onClick, onCenterClick }) => {
-  // --- 1. Definición de las Formas ---
 
-  // Pétalos exteriores: más estrechos y puntiagudos
   const closedPetalPath = `
     M 5 0
     C 15 -18, 10 -38, 0 -45
@@ -18,7 +15,6 @@ const Narciso = ({ isOpen, onClick, onCenterClick }) => {
     Z
   `;
 
-  // Trompeta central: más centrada y sobresaliente
   const closedCoronaPath = `
     M 0 -7
     Q 10 -12, 5 0
@@ -58,7 +54,6 @@ const Narciso = ({ isOpen, onClick, onCenterClick }) => {
           <stop offset="100%" stopColor="#f8ec80ff" />
         </radialGradient>
       </defs>
-      {/* Tallo */}
       {!isOpen && (
         <g
           style={{
@@ -67,7 +62,6 @@ const Narciso = ({ isOpen, onClick, onCenterClick }) => {
             transition: 'opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1)',
           }}
         >
-          {/* Reemplazamos <rect> por <path> para crear la curva */}
           <path
             d="M 0 40 Q -15 80 0 120"
             fill="none"
@@ -78,7 +72,6 @@ const Narciso = ({ isOpen, onClick, onCenterClick }) => {
         </g>
       )}
       <g filter="url(#shadow)">
-        {/* Pétalos exteriores */}
         {Array.from({ length: numPetals }).map((_, i) => {
           const rotation = i * (360 / numPetals);
           const translate = isOpen ? 17 : 7;
@@ -101,7 +94,6 @@ const Narciso = ({ isOpen, onClick, onCenterClick }) => {
             </g>
           );
         })}
-        {/* Trompeta central */}
         <g
         className={isOpen ? "cursor-pointer" : ""}
           onClick={isOpen ? onCenterClick : undefined}
@@ -119,7 +111,6 @@ const Narciso = ({ isOpen, onClick, onCenterClick }) => {
             strokeWidth="2"
             style={{ transition: "d 0.8s cubic-bezier(0.6, 0, 0.2, 1) 0.2s" }}
           />
-          {/* Borde rizado */}
           <ellipse
             cx="0"
             cy={isOpen ? 2 : 1}
@@ -132,7 +123,6 @@ const Narciso = ({ isOpen, onClick, onCenterClick }) => {
             }}
           />
         </g>
-        {/* Centro */}
         <circle cx="0" cy="0" r={isOpen ? 3.8 : 2} fill="#d38703ff" 
           />
       </g>
