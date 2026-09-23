@@ -1,174 +1,288 @@
+// Los textos están en src/content/notas.json.
+// El link para entrar es /me-lo-merezco.
+// La encuesta llega a anglsant2002@hotmail.com por FormSubmit.
+// En la lista de notas caben hasta 10. En el celular se apilan hacia abajo.
+import { useEffect, useRef, useState } from 'react'
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom'
+import paginas from './content/notas.json'
+import pikachu from './assets/pikachu.png'
 
-import React, { useState, useRef, useEffect } from 'react'; // Se añaden useRef y useEffect
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import './App.css'
-import Girasol from './components/Girasol'
-import Narciso from './components/Narciso'
-import Margarita from './components/Margarita'
-import Loto from './components/Loto'
-import MargaritaPage from './pages/MargaritaPage';
-import NarcisoPage from './pages/NarcisoPage';
-import LotoPage from './pages/LotoPage';
-import GirasolPage from './pages/GirasolPage';
-import fondo from './assets/fondo.png'
+const base = import.meta.env.BASE_URL.replace(/\/$/, '')
 
-function Home({
-  isOpenMargarita,
-  isOpenNarciso,
-  isOpenLoto,
-  isOpenGirasol,
-  inputValue, setInputValue, checkWord
-}) {
-  const navigate = useNavigate();
+function Cerrada() {
+  useEffect(() => {
+    document.title = 'nota'
+  }, [])
 
-  const margaritaRef = useRef(null);
-  const narcisoRef = useRef(null);
-  const lotoRef = useRef(null);
-  const girasolRef = useRef(null);
-  const [pathData, setPathData] = useState('');
+  return (
+    <main className="escena cerrada">
+      <p>Por aquí no se entra.</p>
+    </main>
+  )
+}
+
+function Original() {
+  useEffect(() => {
+    document.title = 'En construcción'
+  }, [])
+
+  return (
+    <main className="escena original">
+      <h1>Lo siento, pero la vida sigue</h1>
+      <img src={pikachu} alt="" />
+      <p>En construcción...</p>
+    </main>
+  )
+}
+
+function enviarResena(estrellas, comentario) {
+  fetch('https://formsubmit.co/ajax/0e2d4bf0ac734a73352e9e8be12dba64', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      _subject: 'Nota del regalo',
+      _captcha: 'false',
+      _template: 'table',
+      estrellas: `${estrellas} de 5`,
+      comentario: comentario.trim() || '(sin comentario)',
+    }),
+  }).catch(() => {})
+}
+
+function Encuesta({ pagina, onEnviar }) {
+  const [estrellas, setEstrellas] = useState(0)
+  const [comentario, setComentario] = useState('')
+  const [enviado, setEnviado] = useState(false)
+
+  const enviar = (evento) => {
+    evento.preventDefault()
+    if (enviado) return
+    setEnviado(true)
+    onEnviar(estrellas, comentario)
+  }
+
+  return (
+    <main className="escena formulario">
+      <form className="tarjeta" onSubmit={enviar}>
+        <h1>{pagina.tituloEncuesta}</h1>
+        <p className="puntaje">{estrellas} de 5</p>
+        <div className="estrellas" role="group" aria-label="Estrellas">
+          {[1, 2, 3, 4, 5].map((nivel) => (
+            <button
+              key={nivel}
+              type="button"
+              className={nivel <= estrellas ? 'estrella activa' : 'estrella'}
+              aria-label={`${nivel} estrellas`}
+              aria-pressed={nivel <= estrellas}
+              onClick={() => setEstrellas(estrellas === nivel ? 0 : nivel)}
+            >
+              ★
+            </button>
+          ))}
+        </div>
+        <label className="campo">
+          <span>{pagina.placeholderComentario}</span>
+          <textarea
+            value={comentario}
+            onChange={(evento) => setComentario(evento.target.value)}
+            rows={5}
+          />
+        </label>
+        <button className="enviar" type="submit">
+          {pagina.enviar}
+        </button>
+      </form>
+    </main>
+  )
+}
+
+function Broma({ pagina, onSi }) {
+  const [escala, setEscala] = useState(1)
+  const [fuga, setFuga] = useState(null)
+  const [yaHuyo, setYaHuyo] = useState(false)
+  const huyendo = useRef(false)
+
+  const huir = (evento) => {
+    evento.preventDefault()
+    evento.stopPropagation()
+    if (huyendo.current) return
+    huyendo.current = true
+    window.setTimeout(() => {
+      huyendo.current = false
+    }, 220)
+
+    const ancho = 96
+    const alto = 52
+    const margen = 12
+    let x = margen
+    let y = margen
+    for (let intento = 0; intento < 8; intento += 1) {
+      x = margen + Math.random() * Math.max(0, window.innerWidth - ancho - margen * 2)
+      y = margen + Math.random() * Math.max(0, window.innerHeight - alto - margen * 2)
+      const lejos = Math.hypot(x - evento.clientX, y - evento.clientY) > 130
+      if (lejos) break
+    }
+
+    setFuga({ x, y })
+    setEscala((valor) => Math.min(valor * 1.4, 22))
+    setYaHuyo(true)
+  }
+
+  return (
+    <main className="escena broma">
+      <p className="pregunta">{pagina.preguntaReal}</p>
+      <div className="decision">
+        <button
+          type="button"
+          className="si"
+          style={{ transform: `scale(${escala})` }}
+          onClick={onSi}
+        >
+          Sí
+        </button>
+        <button
+          type="button"
+          className={fuga ? 'no no-suelto' : 'no'}
+          style={fuga ? { left: fuga.x, top: fuga.y } : undefined}
+          onPointerEnter={yaHuyo ? huir : undefined}
+          onPointerDown={huir}
+          onKeyDown={(evento) => {
+            if (evento.key === 'Enter' || evento.key === ' ') huir(evento)
+          }}
+        >
+          No
+        </button>
+      </div>
+    </main>
+  )
+}
+
+function Cierre({ texto }) {
+  return (
+    <main className="escena">
+      <div className="intro">
+        <h1>{texto}</h1>
+      </div>
+    </main>
+  )
+}
+
+function NotasPage() {
+  const { palabra } = useParams()
+  const clave = decodeURIComponent(palabra || '').trim().toLowerCase()
+  const pagina = paginas[clave]
+  const [fase, setFase] = useState('word')
+  const [vista, setVista] = useState('notas')
+  const [escalaBoton, setEscalaBoton] = useState(1)
 
   useEffect(() => {
-    const calculatePath = () => {
-      if (margaritaRef.current && narcisoRef.current && lotoRef.current && girasolRef.current) {
-        const margaritaRect = margaritaRef.current.getBoundingClientRect();
-        const narcisoRect = narcisoRef.current.getBoundingClientRect();
-        const lotoRect = lotoRef.current.getBoundingClientRect();
-        const girasolRect = girasolRef.current.getBoundingClientRect();
+    if (!pagina) return undefined
 
-        const margaritaPoint = { x: margaritaRect.left + margaritaRect.width / 2, y: margaritaRect.top + margaritaRect.height / 2 };
-        const narcisoPoint = { x: narcisoRect.left + narcisoRect.width / 2, y: narcisoRect.top + narcisoRect.height / 2 };
-        const lotoPoint = { x: lotoRect.left + lotoRect.width / 2, y: lotoRect.top + lotoRect.height / 2 };
-        const girasolPoint = { x: girasolRect.left + girasolRect.width / 2, y: girasolRect.top + girasolRect.height / 2 };
-        
-        const newPathData = `
-          M ${margaritaPoint.x} ${margaritaPoint.y}
-          Q ${(margaritaPoint.x + narcisoPoint.x) / 2} ${(margaritaPoint.y + narcisoPoint.y) / 2 + 50} ${narcisoPoint.x} ${narcisoPoint.y}
-          M ${narcisoPoint.x} ${narcisoPoint.y}
-          Q ${(narcisoPoint.x + lotoPoint.x) / 2} ${(narcisoPoint.y + lotoPoint.y) / 2 - 50} ${lotoPoint.x} ${lotoPoint.y}
-          M ${lotoPoint.x} ${lotoPoint.y}
-          Q ${(lotoPoint.x + girasolPoint.x) / 2} ${(lotoPoint.y + girasolPoint.y) / 2 + 50} ${girasolPoint.x} ${girasolPoint.y}
-        `;
-        
-        setPathData(newPathData);
-      }
-    };
-    
-    calculatePath();
-    window.addEventListener('resize', calculatePath);
-    return () => window.removeEventListener('resize', calculatePath);
-  }, []);
+    setFase('word')
+    setVista('notas')
+    setEscalaBoton(1)
+    document.title = pagina.titulo || clave
+
+    const reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const espera = reducir ? 1200 : 4200
+    const salida = reducir ? 900 : 700
+
+    const dejar = setTimeout(() => setFase('leaving'), espera)
+    const quitar = setTimeout(() => setFase('gone'), espera + salida)
+
+    return () => {
+      clearTimeout(dejar)
+      clearTimeout(quitar)
+    }
+  }, [clave, pagina])
+
+  useEffect(() => {
+    if (vista !== 'notas') window.scrollTo(0, 0)
+  }, [vista])
+
+  if (!pagina) return <Cerrada />
+
+  if (vista === 'encuesta') {
+    return (
+      <Encuesta
+        pagina={pagina}
+        onEnviar={(estrellas, comentario) => {
+          enviarResena(estrellas, comentario)
+          setVista('broma')
+        }}
+      />
+    )
+  }
+
+  if (vista === 'broma') {
+    return <Broma pagina={pagina} onSi={() => setVista('si')} />
+  }
+
+  if (vista === 'si') {
+    return <Cierre texto={pagina.respuestaSi} />
+  }
+
+  const notasVisibles = fase !== 'word'
 
   return (
-    <div
-      className="min-h-screen w-full bg-cover bg-center bg-fixed relative overflow-hidden"
-      style={{ backgroundImage: `url(${fondo})` }}
-    >
-      <div className="palabra"> {/* Movido el input arriba para consistencia */}
-        <input
-          type="text"
-          placeholder="Escribe la palabra..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && checkWord()}
-          className="px-4 py-2 rounded-lg shadow-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
-      </div>
+    <main className="escena">
+      {fase !== 'gone' && (
+        <div className={`intro ${fase === 'leaving' ? 'intro-sale' : ''}`}>
+          <h1>{pagina.titulo}</h1>
+        </div>
+      )}
 
-      <svg
-        className="absolute top-0 left-0 pointer-events-none"
-        width="100%"
-        height="100%"
-        style={{ zIndex: 1 }}
-      >
-        <path
-          d={pathData}
-          stroke="#000000"
-          strokeWidth="4"
-          fill="none"
-          strokeDasharray="15 15"
-          opacity="0.7"
-        />
-      </svg>
-      
-      <div ref={margaritaRef} className="absolute top-[75%] left-[15%] md:top-[60%] md:left-[10%] z-10">
-        <Margarita
-          isOpen={isOpenMargarita}
-          onCenterClick={() => isOpenMargarita && navigate("/margarita")}
-        />
-      </div>
-      <div ref={narcisoRef} className="absolute top-[50%] left-[40%] md:top-[35%] md:left-[35%] z-10">
-        <Narciso
-          isOpen={isOpenNarciso}
-          onCenterClick={() => isOpenNarciso && navigate("/narciso")}
-        />
-      </div>
-      <div ref={lotoRef} className="absolute top-[70%] left-[65%] md:top-[60%] md:right-[28%] md:left-auto z-10">
-        <Loto
-          isOpen={isOpenLoto}
-          onClick={() => { if (isOpenLoto) { navigate("/loto"); }}}
-        />
-      </div>
-      <div ref={girasolRef} className="absolute top-[45%] left-[80%] md:top-[35%] md:right-[10%] md:left-auto z-10">
-        <Girasol
-          isOpen={isOpenGirasol}
-          onClick={() => { if (isOpenGirasol) { navigate("/girasol"); }}}
-        />
-      </div>
-    </div>
-  );
+      <section className={`muro ${notasVisibles ? 'muro-visible' : ''}`} aria-hidden={!notasVisibles}>
+        {pagina.notas.map((texto, indice) => (
+          <article
+            key={`${clave}-${indice}`}
+            className="nota"
+            style={{ animationDelay: `${indice * 80}ms` }}
+          >
+            <p>{texto}</p>
+          </article>
+        ))}
+      </section>
+
+      {notasVisibles && (
+        <>
+          <button
+            type="button"
+            className="crecer"
+            style={{
+              fontSize: `${Math.min(0.16 * escalaBoton, 8)}rem`,
+              width: `${Math.min(2.2 * escalaBoton, 200)}rem`,
+              whiteSpace: escalaBoton < 4 ? 'nowrap' : 'normal',
+              overflow: escalaBoton < 4 ? 'hidden' : 'visible',
+              borderRadius: escalaBoton < 4 ? '999px' : '12px',
+              padding: escalaBoton < 4 ? '0.12rem 0.4rem' : '0.75rem 0.95rem',
+            }}
+            onClick={() => setEscalaBoton((valor) => Math.min(valor * 1.7, 90))}
+          >
+            {pagina.botonEsquina}
+          </button>
+          <footer className="pie">
+            <button type="button" className="finalizar" onClick={() => setVista('encuesta')}>
+              {pagina.finalizar}
+            </button>
+          </footer>
+        </>
+      )}
+    </main>
+  )
 }
 
-function App() {
-  const [isOpenGirasol, setIsOpenGirasol] = useState(false);
-  const [isOpenMargarita, setIsOpenMargarita] = useState(false);
-  const [isOpenLoto, setIsOpenLoto] = useState(false);
-  const [isOpenNarciso, setIsOpenNarciso] = useState(false);
-
-  const [inputValue, setInputValue] = useState("");
-
-  const secretWords = {
-    girasol: "sistólica",
-    margarita: "amo",
-    loto: "evy",
-    narciso: "narciso",
-  };
-
-  const checkWord = () => {
-    if (inputValue.toLowerCase() === secretWords.girasol) setIsOpenGirasol(true);
-    if (inputValue.toLowerCase() === secretWords.margarita) setIsOpenMargarita(true);
-    if (inputValue.toLowerCase() === secretWords.loto) setIsOpenLoto(true);
-    if (inputValue.toLowerCase() === secretWords.narciso) setIsOpenNarciso(true);
-  };
-
+export default function App() {
   return (
-    <BrowserRouter basename="/Flores-amarillas/">
+    <BrowserRouter basename={base || undefined}>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              isOpenMargarita={isOpenMargarita}
-              setIsOpenMargarita={setIsOpenMargarita}
-              isOpenNarciso={isOpenNarciso}
-              setIsOpenNarciso={setIsOpenNarciso}
-              isOpenLoto={isOpenLoto}
-              setIsOpenLoto={setIsOpenLoto}
-              isOpenGirasol={isOpenGirasol}
-              setIsOpenGirasol={setIsOpenGirasol}
-              inputValue={inputValue}
-              setInputValue={setInputValue}
-              checkWord={checkWord}
-            />
-          }
-        />
-        <Route path="/margarita" element={<MargaritaPage />} />
-        <Route path="/narciso" element={<NarcisoPage />} />
-        <Route path="/loto" element={<LotoPage />} />
-        <Route path="/girasol" element={<GirasolPage />} />
-
+        <Route path="/" element={<Original />} />
+        <Route path="/:palabra" element={<NotasPage />} />
+        <Route path="*" element={<Cerrada />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
-
-export default App;

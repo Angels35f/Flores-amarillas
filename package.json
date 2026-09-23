@@ -1,8 +1,7 @@
 {
-  "name": "flores-regalo",
+  "name": "notas",
   "private": true,
   "version": "1.0.0",
-  "homepage": "https://github.com/Angels35f/Flores-amarillas",
   "type": "module",
   "scripts": {
     "dev": "vite",
